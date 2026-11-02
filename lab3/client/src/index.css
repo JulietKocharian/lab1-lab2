@@ -1,0 +1,14 @@
+:root {
+  color-scheme: light;
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  background: #f4f1ea;
+  color: #1c1915;
+}
+
+body {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
