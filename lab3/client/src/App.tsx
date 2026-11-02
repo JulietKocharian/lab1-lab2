@@ -1,73 +1,51 @@
-import { FormEvent, useState } from 'react';
-import './App.css';
+import { useEffect, useState } from 'react';
+import { ClassifyView } from './views/ClassifyView';
+import { GuessView } from './views/GuessView';
 
-const UNITS = ['C', 'F', 'K'] as const;
-type Unit = (typeof UNITS)[number];
+type View = 'guess' | 'classify';
 
-export default function App() {
-  const [value, setValue] = useState('');
-  const [src, setSrc] = useState<Unit>('C');
-  const [dst, setDst] = useState<Unit>('F');
-  const [result, setResult] = useState('');
-  const [error, setError] = useState('');
+function readView(): View {
+  return window.location.pathname.startsWith('/classify') ? 'classify' : 'guess';
+}
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError('');
-    setResult('');
+export function App() {
+  const [view, setView] = useState<View>(readView);
 
-    const params = new URLSearchParams({ value, src, dst });
-    const response = await fetch(`/convert?${params.toString()}`);
-    const text = (await response.text()).trim();
+  useEffect(() => {
+    const onPop = () => setView(readView());
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
-    if (!response.ok) {
-      setError('Use a number and C, F, or K.');
-      return;
+  function open(next: View): void {
+    const path = next === 'classify' ? '/classify' : '/';
+    if (window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
     }
-
-    setResult(text);
+    setView(next);
   }
 
   return (
-    <main>
-      <h1>Temperature</h1>
-      <form onSubmit={onSubmit}>
-        <label>
-          Value
-          <input
-            name="value"
-            type="number"
-            step="any"
-            inputMode="decimal"
-            value={value}
-            onChange={(event) => setValue(event.target.value)}
-            required
-          />
-        </label>
-        <label>
-          From
-          <select name="src" value={src} onChange={(event) => setSrc(event.target.value as Unit)}>
-            {UNITS.map((unit) => (
-              <option key={unit} value={unit}>
-                {unit}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          To
-          <select name="dst" value={dst} onChange={(event) => setDst(event.target.value as Unit)}>
-            {UNITS.map((unit) => (
-              <option key={unit} value={unit}>
-                {unit}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button type="submit">Convert</button>
-      </form>
-      {result ? <p className="result">{result}</p> : null}
-      {error ? <p className="error">{error}</p> : null}
-    </main>
+    <div className="page">
+      <header className="site-header">
+        <h1>Climate guess</h1>
+        <nav className="tabs" aria-label="Screens">
+          <button type="button" className={view === 'guess' ? 'tab active' : 'tab'} onClick={() => open('guess')}>
+            Guess
+          </button>
+          <button
+            type="button"
+            className={view === 'classify' ? 'tab active' : 'tab'}
+            onClick={() => open('classify')}
+          >
+            Classify
+          </button>
+        </nav>
+      </header>
+      <p className="lede">
+        Guess the climate behind a hidden city, or classify a place from its average high, yearly rain, and humidity.
+      </p>
+      {view === 'guess' ? <GuessView /> : <ClassifyView />}
+    </div>
   );
 }

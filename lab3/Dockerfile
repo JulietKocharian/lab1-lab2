@@ -20,4 +20,5 @@ COPY --from=server /src/node_modules ./node_modules
 COPY --from=server /src/dist ./dist
 COPY --from=client /src/dist ./public
 EXPOSE 8000
+USER node
 CMD ["node", "dist/main.js"]

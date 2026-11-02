@@ -1,23 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-import { ConvertController } from './convert.controller';
-import { ConvertService } from './convert.service';
-import { HealthController } from './health.controller';
+import { ClimateModule } from './climate/climate.module';
+import { GameModule } from './game/game.module';
 
 @Module({
-  imports: [
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
-      renderPath: '/',
-      exclude: ['/health', '/convert'],
-      serveStaticOptions: {
-        fallthrough: true,
-        index: 'index.html',
-      },
-    }),
-  ],
-  controllers: [HealthController, ConvertController],
-  providers: [ConvertService],
+  imports: [ClimateModule, GameModule],
 })
 export class AppModule {}
