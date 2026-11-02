@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { CitiesService } from '../cities/cities.service';
-import type { CityClues } from '../cities/city';
 import type { ClimateName } from '../climate/climate.rules';
 
 interface StoredRound {
@@ -9,9 +8,15 @@ interface StoredRound {
   answered: boolean;
 }
 
+export interface RoundClues {
+  tempRange: string;
+  rainfall: string;
+  season: string;
+}
+
 export interface RoundResponse {
   roundId: string;
-  clues: CityClues;
+  clues: RoundClues;
 }
 
 export interface GuessResponse {
@@ -45,7 +50,7 @@ export class GameService {
       clues: {
         tempRange: city.clues.tempRange,
         rainfall: city.clues.rainfall,
-        seasonFeel: city.clues.seasonFeel,
+        season: city.clues.seasonFeel,
       },
     };
   }

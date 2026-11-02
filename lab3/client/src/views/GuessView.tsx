@@ -97,7 +97,7 @@ export function GuessView() {
           </article>
           <article className="clue">
             <h3>Seasons</h3>
-            <p>{round.clues.seasonFeel}</p>
+            <p>{round.clues.season}</p>
           </article>
         </div>
       ) : null}

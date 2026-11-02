@@ -9,6 +9,10 @@ export class ClimateController {
   @Post('classify')
   @HttpCode(200)
   classify(@Body() body: ClassifyDto) {
-    return this.climateService.classify(body);
+    return this.climateService.classify({
+      averageHighC: body.highC,
+      annualRainfallMm: body.rainfallMm,
+      humidityPercent: body.humidity,
+    });
   }
 }
