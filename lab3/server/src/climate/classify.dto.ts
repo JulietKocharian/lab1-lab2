@@ -8,9 +8,9 @@ export const ANNUAL_RAINFALL_MAX_MM = 12000;
 export const HUMIDITY_MIN_PERCENT = 0;
 export const HUMIDITY_MAX_PERCENT = 100;
 
-const averageHighMessage = `highC must be a number from ${AVERAGE_HIGH_MIN_C} to ${AVERAGE_HIGH_MAX_C}.`;
-const rainfallMessage = `rainfallMm must be a number from ${ANNUAL_RAINFALL_MIN_MM} to ${ANNUAL_RAINFALL_MAX_MM}.`;
-const humidityMessage = `humidity must be a number from ${HUMIDITY_MIN_PERCENT} to ${HUMIDITY_MAX_PERCENT}.`;
+const averageHighMessage = `Average high must be a number from ${AVERAGE_HIGH_MIN_C} to ${AVERAGE_HIGH_MAX_C} °C.`;
+const rainfallMessage = `Annual rainfall must be a number from ${ANNUAL_RAINFALL_MIN_MM} to ${ANNUAL_RAINFALL_MAX_MM} mm.`;
+const humidityMessage = `Humidity must be a number from ${HUMIDITY_MIN_PERCENT} to ${HUMIDITY_MAX_PERCENT}%.`;
 
 function toRequiredNumber(value: unknown): unknown {
   if (typeof value === 'number') {
@@ -46,13 +46,13 @@ function IsBoundedNumber(min: number, max: number, message: string, validationOp
 export class ClassifyDto {
   @Transform(({ value }) => toRequiredNumber(value))
   @IsBoundedNumber(AVERAGE_HIGH_MIN_C, AVERAGE_HIGH_MAX_C, averageHighMessage)
-  highC!: number;
+  averageHighC!: number;
 
   @Transform(({ value }) => toRequiredNumber(value))
   @IsBoundedNumber(ANNUAL_RAINFALL_MIN_MM, ANNUAL_RAINFALL_MAX_MM, rainfallMessage)
-  rainfallMm!: number;
+  annualRainfallMm!: number;
 
   @Transform(({ value }) => toRequiredNumber(value))
   @IsBoundedNumber(HUMIDITY_MIN_PERCENT, HUMIDITY_MAX_PERCENT, humidityMessage)
-  humidity!: number;
+  humidityPercent!: number;
 }

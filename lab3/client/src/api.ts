@@ -11,7 +11,7 @@ export type ClimateName = (typeof CLIMATES)[number]['id'];
 export interface CityClues {
   tempRange: string;
   rainfall: string;
-  season: string;
+  seasonFeel: string;
 }
 
 export interface RoundResponse {
@@ -32,9 +32,9 @@ export interface ScoreResponse {
 }
 
 export interface ClassifyRequest {
-  highC?: number | null;
-  rainfallMm?: number | null;
-  humidity?: number | null;
+  averageHighC?: number | null;
+  annualRainfallMm?: number | null;
+  humidityPercent?: number | null;
 }
 
 export interface Classification {
@@ -119,14 +119,14 @@ export function getScore(): Promise<ScoreResponse> {
 
 export function classifyClimate(input: ClassifyRequest): Promise<Classification> {
   const body: Record<string, number> = {};
-  if (typeof input.highC === 'number') {
-    body.highC = input.highC;
+  if (typeof input.averageHighC === 'number') {
+    body.averageHighC = input.averageHighC;
   }
-  if (typeof input.rainfallMm === 'number') {
-    body.rainfallMm = input.rainfallMm;
+  if (typeof input.annualRainfallMm === 'number') {
+    body.annualRainfallMm = input.annualRainfallMm;
   }
-  if (typeof input.humidity === 'number') {
-    body.humidity = input.humidity;
+  if (typeof input.humidityPercent === 'number') {
+    body.humidityPercent = input.humidityPercent;
   }
   return request<Classification>('/api/classify', {
     method: 'POST',
