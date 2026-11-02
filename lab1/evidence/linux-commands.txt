@@ -1,0 +1,75 @@
+Lab 1 — basic Linux commands
+When: 2026-11-03 01:17:03 +04
+
+$ whoami
+ubuntu
+
+$ pwd
+/workspace
+
+$ hostname
+cursor
+
+$ uname -a
+Linux cursor 6.12.94+ #1 SMP PREEMPT_DYNAMIC Tue Oct 27 12:38:43 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+$ cat /etc/os-release
+PRETTY_NAME="Ubuntu 24.04.5 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.5 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=noble
+LOGO=ubuntu-logo
+
+$ systemd-detect-virt || true
+kvm
+
+$ mkdir -p sandbox && cd sandbox
+/tmp/lab1-practice.sQ9FUk
+
+$ printf '%s\n' 'hello from lab 1' > note.txt
+$ cat note.txt
+hello from lab 1
+
+$ cp note.txt note-copy.txt
+$ mv note-copy.txt renamed.txt
+$ chmod 644 note.txt
+$ ls -la
+total 20
+drwx------   3 ubuntu ubuntu 4096 Nov  2 21:17 .
+drwxrwxrwt. 10 root   root   4096 Nov  2 21:17 ..
+drwxr-xr-x   2 ubuntu ubuntu 4096 Nov  2 21:17 docs
+-rw-r--r--   1 ubuntu ubuntu   17 Nov  2 21:17 note.txt
+-rw-r--r--   1 ubuntu ubuntu   17 Nov  2 21:17 renamed.txt
+
+$ df -h /
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vdc        254G  7.8G  246G   4% /
+
+$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi        11Gi       2.7Gi        18Mi       2.2Gi       4.6Gi
+Swap:             0B          0B          0B
+
+$ ip -br addr
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+enp0s3           UP             172.30.0.2/24 fe80::802b:38ff:fe3d:bcd0/64 
+docker0          DOWN           172.17.0.1/16 
+
+$ ps -eo pid,comm --sort=pid | head -n 8
+    PID COMMAND
+      1 tini
+      6 pod-daemon
+   1551 node
+   2003 desktop-init.sh
+   2074 dbus-daemon
+   2167 tigervncserver
+   2168 Xtigervnc
+
